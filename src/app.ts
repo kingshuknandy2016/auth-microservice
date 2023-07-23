@@ -7,9 +7,12 @@ import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import http from "http";
 import Debug from "debug";
+import { handleErrors } from "./middlewares/error-handler.middleware";
 
 const swaggerYamlPath = path.resolve("./swagger-definition.yaml");
-const debug = Debug("APP_DEBUGGER");
+
+const debug = Debug("microservice-application");
+
 export default class ServiceConfiguration {
   app: Application;
   port: number;
@@ -70,12 +73,13 @@ export default class ServiceConfiguration {
               this.app.use(
                 "/api-docs",
                 swaggerUi.serve,
-                swaggerUi.setup(swaggerConfig)
+                swaggerUi.setup(swaggerConfig),
               );
-            }
+            },
           );
         });
 
+        this.app.use(handleErrors);
         // Testing Basic Route(Health)
         this.app.get("/health", (req: Request, res: Response) => {
           res.send("Express Server is healthy");
