@@ -8,6 +8,8 @@ import cors from "cors";
 import http from "http";
 import Debug from "debug";
 import { handleErrors } from "./middlewares/error-handler.middleware";
+import { PORT } from "./constants/global_constants";
+import { IndexRouter } from "./routes";
 
 const swaggerYamlPath = path.resolve("./swagger-definition.yaml");
 
@@ -18,23 +20,11 @@ export default class ServiceConfiguration {
   port: number;
   server: http.Server;
 
-  constructor(port: number) {
+  constructor() {
     this.app = express();
-    this.port = port;
+    this.port = PORT as unknown as number;
     this.server = new http.Server();
   }
-
-  registeringCommonMiddleware = (): Promise<Application> => {
-    return new Promise((resolve, reject) => {
-      try {
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: false }));
-        resolve(this.app);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
 
   // Swagger Initialization Helper
   initializeSwagger = (): Promise<swagger.SwaggerMiddleware> => {
@@ -85,6 +75,8 @@ export default class ServiceConfiguration {
           res.send("Express Server is healthy");
         });
 
+        // Registering the Router
+        this.app.use("/", new IndexRouter().router);
         resolve(this.app);
       } catch (error) {
         reject(error);
