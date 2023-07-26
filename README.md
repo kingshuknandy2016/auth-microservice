@@ -54,3 +54,4 @@ docker run --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=password -d post
   POST   | /apis/v1/users/setUser
 +--------+------------------------------+
 ```
+- [TypeScript][typescript] [5.0][typescript-5-0]
