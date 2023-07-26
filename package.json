@@ -2,6 +2,10 @@
   "name": "microservice-starter",
   "version": "0.0.0",
   "private": true,
+
+  "author": {"name": "Kingshuk Nandy","email": "kingshuknandy2016@gmail.com"},
+  "repository": {"url": "https://github.com/kingshuknandy2016/microservice-nodejs-starter","type": "git"},
+  "homepage": "https://github.com/kingshuknandy2016/microservice-nodejs-starter#readme",
   "scripts": {
     "build": "tsc",
     "start:dev": "npm run build && node ./dist/index.js",
