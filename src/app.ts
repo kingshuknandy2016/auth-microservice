@@ -10,6 +10,12 @@ import Debug from "debug";
 import { handleErrors } from "./middlewares/error-handler.middleware";
 import { PORT } from "./constants/global_constants";
 import { IndexRouter } from "./routes";
+import { Postgres } from "./dbServices";
+import logger from "./loggers/logger.winston";
+import { error } from "console";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import { testDb } from "./dbServices/dbChecker";
 
 const swaggerYamlPath = path.resolve("./swagger-definition.yaml");
 
@@ -43,8 +49,9 @@ export default class ServiceConfiguration {
     return new Promise((resolve, reject) => {
       try {
         // Registering Common Middleware
-        this.app.use(express.json());
-        this.app.use(express.urlencoded({ extended: false }));
+        this.app.use(bodyParser.json());
+        this.app.use(cookieParser());
+        this.app.use(bodyParser.urlencoded({ extended: true }));
 
         // Swagger Express Middleware Setup
         fs.promises.readFile(swaggerYamlPath).then((swaggerConfig) => {
@@ -60,6 +67,7 @@ export default class ServiceConfiguration {
               const allowedOrigin = "*";
               this.app.use(cors({ origin: allowedOrigin }));
               this.app.use(express.json());
+              this.app.use(express.urlencoded({ extended: false }));
               this.app.use(
                 "/api-docs",
                 swaggerUi.serve,
@@ -119,6 +127,21 @@ export default class ServiceConfiguration {
 
   startApplication = (): Promise<http.Server> => {
     return new Promise((resolve, reject) => {
+      Postgres.isAuthenticated()
+        .then(() => {
+          logger.info("Database Authentication is Successful");
+        })
+        .catch((error) => {
+          logger.error(`Authentication is not successful : ${error}`);
+        });
+
+      Postgres.connection
+        .sync({ alter: true })
+        .then(() => logger.info(`Database is Connected`))
+        .catch((error) =>
+          logger.error(`Unable to connect with Database. ${error}`),
+        );
+
       this.configureApplication()
         .then(() => {
           // Create HTTP server

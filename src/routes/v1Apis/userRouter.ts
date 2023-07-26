@@ -1,4 +1,5 @@
 import { Router, Request, Response } from "express";
+import controller from "../../controller";
 
 export class UserRouter {
   public router: Router;
@@ -9,14 +10,18 @@ export class UserRouter {
   }
 
   public setRoutes() {
-    this.router.use("/getUsers", (req: Request, res: Response) => {
+    this.router.get("/getUsersBasic", (req: Request, res: Response) => {
       res.status(200).json({
         message: "Received the User Details",
         users: [
           { name: "Ram", age: 23 },
-          { name: "Tonu", age: 42 },
+          { name: "Tittoo", age: 42 },
         ],
       });
     });
+
+    const userController = new controller.v1.UserController();
+    this.router.get("/getUsers", userController.getUsers);
+    this.router.post("/setUser", userController.setUser);
   }
 }
