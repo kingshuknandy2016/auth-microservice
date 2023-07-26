@@ -1,6 +1,7 @@
 <html><center><h1>TypeScript Express Microservice Template</h1></center></html>
 
-![Image]("docs/images/Microservices-Built-With-Node-1.jpg")
+![Microservices-Built-With-Node-1](https://github.com/kingshuknandy2016/microservice-nodejs-starter/assets/36564770/28454ace-8629-4849-8da1-38bab6076e26)
+
 ## Quick Start
 
 In order to start the application execute the following command
