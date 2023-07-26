@@ -4,7 +4,6 @@ import User, { UserInterface } from "../models/user.model";
 export default class UserService {
   public async getUsers() {
     const users: User[] = await User.findAll();
-    logger.info(users);
     return users;
   }
 

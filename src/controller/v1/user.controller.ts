@@ -1,6 +1,5 @@
-import { NextFunction, RequestHandler, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import UserService from "../../service/user.service";
-import logger from "../../loggers/logger.winston";
 
 const userService = new UserService();
 export class UserController {

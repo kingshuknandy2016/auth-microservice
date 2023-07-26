@@ -12,10 +12,8 @@ import { PORT } from "./constants/global_constants";
 import { IndexRouter } from "./routes";
 import { Postgres } from "./dbServices";
 import logger from "./loggers/logger.winston";
-import { error } from "console";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import { testDb } from "./dbServices/dbChecker";
 
 const swaggerYamlPath = path.resolve("./swagger-definition.yaml");
 
@@ -66,8 +64,8 @@ export default class ServiceConfiguration {
               ];
               const allowedOrigin = "*";
               this.app.use(cors({ origin: allowedOrigin }));
-              this.app.use(express.json());
-              this.app.use(express.urlencoded({ extended: false }));
+              this.app.use(express.json()); // parse requests of content-type - application/json
+              this.app.use(express.urlencoded({ extended: false })); // parse requests of content-type - application/x-www-form-urlencoded
               this.app.use(
                 "/api-docs",
                 swaggerUi.serve,

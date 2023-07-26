@@ -55,8 +55,11 @@ docker run --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=password -d post
   Method | URI
 +--------+------------------------------+
   GET    | /health
+  GET    | /apis/v1/employees/getEmployeeBasic
+  GET    | /apis/v1/employees/getEmployees
+  POST   | /apis/v1/employees/setEmployee
   GET    | /apis/v1/users/getUsersBasic
-  GET    | /apis/apis/v1/users/getUsers
+  GET    | /apis/v1/users/getUsers
   POST   | /apis/v1/users/setUser
 +--------+------------------------------+
 ```
