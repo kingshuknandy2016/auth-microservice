@@ -17,3 +17,7 @@ export const DB_PORT = (process.env.DB_PORT as unknown as number) || 5432;
 export const LOG: Log = {
   level: NODE_ENV === "production" ? "info" : "debug",
 };
+
+// AAuthentication Secrets
+export const JWT_SECRET: string = process.env.JWT_SECRET || "123456";
+export const tokenExpirationInSeconds = 36000;

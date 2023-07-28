@@ -11,7 +11,9 @@ import {
 export interface UserInterface {
   id?: number;
   name: string;
-  age: number;
+  email: string;
+  username?: string;
+  password: string;
 }
 
 @Table({ timestamps: true, tableName: "user_master", schema: "main_db" })
@@ -25,6 +27,12 @@ export default class User extends Model<UserInterface> {
   @Column({ type: DataType.STRING(256), allowNull: false, unique: false })
   name!: string;
 
-  @Column({ type: DataType.INTEGER, allowNull: false, unique: false })
-  age!: number;
+  @Column({ type: DataType.STRING(256), allowNull: false, unique: true })
+  email!: string;
+
+  @Column({ type: DataType.STRING(256), allowNull: true, unique: false })
+  username!: string;
+
+  @Column({ type: DataType.STRING(256), allowNull: false, unique: false })
+  password!: string;
 }

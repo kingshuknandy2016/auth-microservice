@@ -9,35 +9,7 @@ import {
 
 const userService = new UserService();
 
-export class UserController {
-  public async getUsers(req: Request, res: Response, next: NextFunction) {
-    try {
-      const data = await userService.getUsers();
-      return res
-        .status(200)
-        .json({ data: data, message: "Successfully got all the user" });
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  public async setUser(req: Request, res: Response, next: NextFunction) {
-    try {
-      const { name, email, password } = req.body;
-      const hashed = await Password.toHash(password);
-      const data = await userService.setUser({
-        name,
-        email,
-        password: hashed,
-      });
-      return res
-        .status(200)
-        .json({ data, message: "Successfully Inserted the User" });
-    } catch (error) {
-      next(error);
-    }
-  }
-
+export class AuthController {
   public async signUp(req: Request, res: Response, next: NextFunction) {
     try {
       const { name, email, password } = req.body;

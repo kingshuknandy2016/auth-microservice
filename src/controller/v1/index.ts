@@ -1,3 +1,4 @@
 import { UserController } from "./user.controller";
 import { EmployeeController } from "./employee.controller";
-export default { UserController, EmployeeController };
+import { AuthController } from "./auth.controller";
+export default { UserController, EmployeeController, AuthController };

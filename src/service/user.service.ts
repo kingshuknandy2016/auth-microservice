@@ -11,4 +11,17 @@ export default class UserService {
     const c = new User(userInput);
     return await c.save();
   }
+
+  public async registerUser(userInput: UserInterface) {
+    const user: User = new User(userInput);
+    return await user.save();
+  }
+
+  public async findUserByEmail(email: string): Promise<User | null> {
+    return await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+  }
 }
