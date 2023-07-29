@@ -14,7 +14,7 @@ export interface EmployeeInterface {
   age: number;
 }
 
-@Table({ timestamps: true, tableName: "employee_master", schema: "main_db" })
+@Table({ timestamps: true, tableName: "employee_master" })
 export default class Employee extends Model<EmployeeInterface> {
   @AutoIncrement
   @Unique

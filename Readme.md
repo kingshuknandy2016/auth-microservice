@@ -12,7 +12,16 @@
 
 ## Quick Start
 
-In order to start the application execute the following command
+Get the application DB up first, using Postgres Docker Image
+
+```cmd
+docker pull postgres
+```
+
+```cmd
+docker run --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres
+```
+Then execute the following command start the application in dev mode
 
 ```cmd
 npm run start:dev
@@ -41,29 +50,34 @@ npm test
 
 Access the Swagger from the URL http://localhost:3000/api-docs/
 
-## Containerization
+## Containerization and Deployment
 
-Build the Docker Image
+### Simple Implementation deploying docker images
 
+- In order to communicate between containers we need to create a [user-defined custom bridge networks](https://docs.docker.com/network/drivers/bridge/)
+```cmd
+  docker network create -o com.docker.network.bridge.enable_icc=true custom-network
+```
+- Get the Postgres DB up. Run the postgres image, passing the newly created network ***custom-network***
+```cmd
+docker run --network custom-network --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=password postgres
+```
+- Build the app's image
 ```cmd
 docker build . -t kingshuknandy/node-microservice
 ```
 
-Run the docker image in detached mode(-d)
-
+- Run the app's image in detached mode, passing the newly created network ***custom-network*** 
 ```cmd
-docker run -p 3000:3000 -d kingshuknandy/node-microservice:latest
+docker run -p 3000:3000 --network custom-network --env-file .env  --env DB_HOST='postgres-db' --name node-microservice kingshuknandy/node-microservice:latest
 ```
-## DB Setup
+### Using Docker Hub
 
-### Using Postgres Docker Image
-
+- Created the [Dockerfile](/Dockerfile) to build the app
+- Defined the services that make up the app in [docker-compose.yml](/docker-compose.yml) so they can be run together in an isolated environment.
+- Run ***docker-compose up*** and Compose starts and runs your entire app.
 ```cmd
-docker pull postgres
-```
-
-```cmd
-docker run --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=password -d postgres
+docker-compose up
 ```
 
 ## List of Routes
@@ -91,3 +105,8 @@ docker run --name postgres-db -p 5432:5432 -e POSTGRES_PASSWORD=password -d post
 +--------+------------------------------+
 ```
 
+
+
+
+
+## References

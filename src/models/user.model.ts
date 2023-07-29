@@ -16,7 +16,7 @@ export interface UserInterface {
   password: string;
 }
 
-@Table({ timestamps: true, tableName: "user_master", schema: "main_db" })
+@Table({ timestamps: true, tableName: "user_master" })
 export default class User extends Model<UserInterface> {
   @AutoIncrement
   @Unique
